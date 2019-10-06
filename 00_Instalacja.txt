@@ -1,0 +1,6 @@
+Ściągamy R z https://cran.r-project.org/mirrors.html .
+Instalujemy.
+Można zainstalować także poprzez yum'a, albo apt-get'a (pod Linuxem), albo brew (MacOS X)
+
+Ściągamy RStudio z https://www.rstudio.com/products/rstudio/#Desktop 
+Instalujemy.
