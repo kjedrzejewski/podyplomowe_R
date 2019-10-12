@@ -14,7 +14,7 @@
 ###  gdzie zwykle są przyciski "Run" oraz "Source'
 ###################################################
 
-# ten dashboard zawiera 3 suwaków, wykres oraz
+# ten dashboard zawiera 3 suwaki, wykres oraz
 # pole tekstowe pod tym wykresem. Zmiana ustawień
 # suwaków powoduje automatyczne przegenerowanie
 # wykresu oraz jego parametrów podanych w polu
@@ -95,6 +95,6 @@ srv <- function(input, output){
   })
 }
 
-# odpalamy dashboard wykorzystując frontend oraz backend
-# zdefiniowane powyżej
+# odpalamy dashboard wykorzystując frontend ('ui') oraz
+# backend ('srv') zdefiniowane powyżej
 shinyApp(ui, srv)

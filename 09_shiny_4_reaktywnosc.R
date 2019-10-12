@@ -57,6 +57,7 @@ v <- reactiveValues(
 isolate(c()) # w tym momencie c się nie zmieniło, bo nie zmieniły się zmienne,
              # a kontener je zawierający, w którym są nowe zmienne a i b.
              # c dalej czeka na informacje o zmianach od starego v$a oraz v$b
+             # w starej zmiennej v
 
 c = reactive({ # zdefiniujmy c jeszcze raz, żeby reagowało na zmiany
   v$a + v$b
