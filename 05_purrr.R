@@ -261,7 +261,6 @@ iris %>%
 # kolumna species_sample zawiera tabele z podzbiorem
 # danych odpowiadających każdemu gatunkowi
 iris %>%
-  group_by(Species) %>%
   nest(species_sample = -Species) %>%
   pull(species_sample) %>% # wyciąga pojedynczą kolumnę
   str() # jak widać ta kolumnę jest listą, której każdy
@@ -271,7 +270,6 @@ iris %>%
 # to teraz zbadajmy zależność między
 # długością a szerokością płatka
 iris %>%
-  group_by(Species) %>%
   nest(species_sample = -Species) %>%
   mutate(
     model = map(
@@ -286,7 +284,6 @@ iris %>%
 
 # to teraz jeszcze wyciągnijmy parametry tych modeli
 iris %>%
-  group_by(Species) %>%
   nest(species_sample = -Species) %>%
   mutate(
     model = map(
@@ -347,7 +344,7 @@ got_chars %>%
 ###################################################
 ?reduce
 
-# zróbmy sobie funckję któr
+# zróbmy sobie funckję która będzie sumować dwie elementy
 suma_dwoch <- function(a,b){
   a + b
 }

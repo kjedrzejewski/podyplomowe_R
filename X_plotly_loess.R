@@ -4,7 +4,7 @@ library(tidyr)
 library(purrr)
 
 
-
+# most simple apporach
 mtcars %>% 
   group_by(gear) %>%
   mutate(fit = fitted(loess(qsec ~ mpg))) %>%
@@ -13,9 +13,14 @@ mtcars %>%
   add_lines(y = ~fit, color = ~factor(gear))
 
 
+
+
+
+
+
+# a little more robust approach
 d = mtcars %>%
-  group_by(gear) %>%
-  nest(.key = loess_data) %>%
+  nest(loess_data = -gear) %>%
   mutate(
     loess_model = map( # model calculation
       loess_data,
