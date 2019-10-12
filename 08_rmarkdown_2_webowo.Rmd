@@ -1,12 +1,12 @@
 ---
 title: "Studia podyplomowe Big Data - Język R - RMarkdown - 2"
 output:
-  word_document:
-    toc: yes
   html_document:
     toc: yes
     toc_float: yes
   pdf_document:
+    toc: yes
+  word_document:
     toc: yes
 ---
 
@@ -53,6 +53,3 @@ datatable(diamonds)
 Spis treści jest generowany w tym dokumencie automatycznie. Ta funkcje została włączona przez dodanie do YAMLa na początku, przy definicji dla danego typu dokumentu linii `toc: yes`. Z kolei `toc_float: yes` powoduje, że w dokumentach HTML spis treści jest osadzony na stałe po lewej stronie dokumentu, i nie jest przewijany z resztą dokumentu.
 ![](08_rmarkdown_2_webowo_toc.png)
 
-# Drobna errata
-
-W nowszych wersjach pakietów, można też bezproblemowo wygenerować dokumenty, nawet gdy plik .Rmd zawiera elementy interaktywne (np. wykresy w plotly'm). Są one wtedy automatycznie konwertowane do obrazków. Ot niespodzianka!
