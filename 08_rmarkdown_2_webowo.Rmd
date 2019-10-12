@@ -4,10 +4,6 @@ output:
   html_document:
     toc: yes
     toc_float: yes
-  pdf_document:
-    toc: yes
-  word_document:
-    toc: yes
 ---
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
