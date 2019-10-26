@@ -38,7 +38,7 @@ paste("Krzychu") %>% paste("poszedł") %>% paste("do") %>% paste("sklepu")
 
 
 ###################################################
-### W ramach tej lekcji będzie pracować dużo ze
+### W ramach tej lekcji będziemy pracować dużo ze
 ### ze zbiorem mtcars. Aby dowiedzieć się o nim
 ### więcej wpisz ?mtcars
 ###################################################
@@ -74,6 +74,10 @@ data %>%
   select(name, mpg) # wybieramy kolumny name oraz mpg
 # to samo co wywołanie select(data, name, mpg)
 
+# za pomocą "-" możemy też wskazać, że chcemy wszystkie kolumny
+# oprócz wymienionych
+data %>%
+  select(-mpg, -carb) # pomijamy kolumny mpg i carb
 
 # zamiast wymieniać kolumny, można określić wzór nazwy, np.
 data %>%
@@ -132,11 +136,8 @@ data %>%
 # install.packages(microbenchmark)
 microbenchmark::microbenchmark(  # :: - wywołaj funckcję z pakietu bez jego ładowania
   data %>%
-    filter(gear == 4, carb == 4)
-)
-
-microbenchmark::microbenchmark( # zauważalnie wolniej, a robi to samo
-  data %>%
+    filter(gear == 4, carb == 4),
+  data %>%                    # to działa zauważalnie wolniej, a robi to samo
     filter(gear == 4) %>%
     filter(carb == 4)
 )

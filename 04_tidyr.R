@@ -116,6 +116,10 @@ data4 %>%
 # - timestampy są umieszczone w wierszach
 # Następnie oblicz średnią wartość każdego indeksu
 
+# podpowiedź: za pomocą "-" można wskazywać kolumny do
+# pominięcia (wtedy bierze wszystkie oprócz tych z minusem)
+
+# ładowanie tabeli stocks
 load("04_tidyr_stocks.RData")
 
 
