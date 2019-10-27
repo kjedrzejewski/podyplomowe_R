@@ -48,7 +48,7 @@ read_csv("iris.csv") # wczytywanie pliku CSV do tabeli
                      # nie przypisaliśmy do zmiennej, więc wynik wypisało
 iris_data = read_csv("iris.csv") # a tutaj przypisanie tego do zmiennej
 typeof(iris_data) # technicznie rzecz biorąc jest to data.frame
-class(iris_data)  # ale lekko ulepszony - tbl - tibble, podstawa tidyverse'u
+class(iris_data)  #   ale lekko ulepszony - tbl - tibble, podstawa tidyverse'u
 
 spec_csv("iris.csv") # wyświeltenie specyfikacji, w postaci którą możemy łatwo skopiować,
                      # przerobić, i wrzucić jako 'col_types', tak jak niżej

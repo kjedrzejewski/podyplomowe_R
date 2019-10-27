@@ -47,3 +47,7 @@
 pierwiastek <- function(x, est = 1, prec = 0.001){
   # Wasz kod
 }
+
+pierwiastek(16)                # wynik powinien być 4
+pierwiastek(pierwiastek(16))   # wynik powinien być 2
+pierwiastek(1e-20, 1, 1e-14)   # wynik powinien być 1e-10

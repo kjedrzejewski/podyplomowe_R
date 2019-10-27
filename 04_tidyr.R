@@ -12,13 +12,13 @@
 ### pivot_longer - zmienia grupę kolumn na parę kolumn klucz-wartość
 ### pivot_longer(dane, selekcja_kolumn, names_to = "klucz", values_to = "wartość")
 ###
-### spread - odwrotnie niż gather
+### pivot_wider - odwrotnie niż pivot_longer
 ### pivot_wider(dane, names_from = 'cecha', values_from = 'wartość')
 ###
 ### separate - podział kolumny na kilka
 ### separate(dataset, kolumna_źródłowa, kolumny_docelowe)
 ###
-### unite - podział kolumny na kilka
+### unite - zrobienie z kilku kolumn jednej
 ### unite(dataset, kolumna_docelowa, kolumna_źródłowa1, kolumna_źródłowa2, ...)
 ###
 ### są też inne funkcje w pakiecie, np. ?expand
