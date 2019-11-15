@@ -4,13 +4,14 @@
 
 # Postgres: https://code.google.com/archive/p/rpostgresql/
 #           https://cran.r-project.org/web/packages/RPostgreSQL/RPostgreSQL.pdf
-# MySQL: https://cran.r-project.org/web/packages/RMySQL/README.html
+# MySQL: https://github.com/r-dbi/RMySQL/blob/master/README.md
 #        https://cran.r-project.org/web/packages/RMySQL/RMySQL.pdf
 # Oracle: http://www.oracle.com/technetwork/database/database-technologies/r/roracle/201403-roracle-2167267.pdf
 #         https://cran.r-project.org/web/packages/ROracle/ROracle.pdf
 # MS SQL Server: https://github.com/imanuelcostigan/RSQLServer
 #                https://cran.r-project.org/web/packages/RSQLServer/RSQLServer.pdf
 # SQLite: https://cran.r-project.org/web/packages/RSQLite/RSQLite.pdf
+# ODBC: https://github.com/r-dbi/odbc (obsługuje kilka różnych baz)
 
 # https://dbplyr.tidyverse.org
 # https://dbplyr.tidyverse.org/articles/dbplyr.html
@@ -120,7 +121,7 @@ dbDisconnect(con)
 # https://github.com/tidyverse/dbplyr
 
 vignette('dbplyr')
-vignette('sql-translation')
+vignette('translation-verb')
 
 # wczytajmy paliety
 library(DBI)
@@ -148,9 +149,9 @@ mtcars %>%
 
 # połączmy się z tabelą cars
 tbl(con, 'cars')
-# pozornie wygląda to jak zwykły tibble
+# pozornie wygląda to jak zwykły tibble...
 
-# ... nim nie jest
+# ... ale nim nie jest
 tbl(con, 'cars') %>%
   typeof()
 
@@ -226,4 +227,24 @@ step4
 
 # na koniec musimy tak samo zamknąć połączenie
 dbDisconnect(con)
+
+
+
+
+###################################################
+### Zadanie DB1
+###################################################
+
+# 1. Korzystając z dbplyra połącz się do bazy Rfam
+#    ( https://rfam.readthedocs.io/en/latest/database.html )
+# 2. Sprawdź ile jest wierszy w tabeli 'family'
+
+library(RMySQL)
+library(tidyverse)
+library(dbplyr)
+
+# tutaj można sprawdzić jakich parametrów połączeniowych 
+# spodziewa się dbConnect w wersji dla MySQL 
+?`dbConnect,MySQLDriver-method`
+
 

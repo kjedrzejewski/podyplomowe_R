@@ -787,7 +787,7 @@ x
 
 
 sampled_frame = function(n, ..., replace = TRUE){
-   ### was kod
+   ### wasz kod
 }
 
 

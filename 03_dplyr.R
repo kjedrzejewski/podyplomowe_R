@@ -45,12 +45,6 @@ paste("Krzychu") %>% paste("poszedł") %>% paste("do") %>% paste("sklepu")
 
 ?mtcars
 
-###################################################
-### select - wybranie kolumn i usunięcie reszty
-### select(dataset, kolumna1, kolumna2, ...)
-###################################################
-?select
-
 # przygotowanie datasetu
 data = as_tibble(mtcars) # konwersja na tibbla, ale na data.frame też by działało
                          # tibble to taki lepszy data.frame
@@ -66,6 +60,12 @@ data # ostatecznie tabelka wygląda tak
 
 data %>%
   View()
+
+###################################################
+### select - wybranie kolumn i usunięcie reszty
+### select(dataset, kolumna1, kolumna2, ...)
+###################################################
+?select
 
 # to samo co View(data), czyli wyświetlenie w tabelce na nowej karcie.
 # Tak samo jak po kliknięciu na zmienną po karcie environment 

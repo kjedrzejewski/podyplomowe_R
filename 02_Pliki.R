@@ -40,6 +40,7 @@ getwd()
 ### Wczytanie pliku CSV
 ###################################################
 
+# install.packages('readr')
 library(readr) # ładujemy pakiet readr
 
 # jest też read.csv w pakiecie bazowym, ale dużo lepiej korzystać z readr::read_csv
@@ -128,5 +129,5 @@ write_csv(d, "iris2.csv") # zapiszmy tabelę ze zmiennej 'd'
 ### Pozostałe kolumny pomiń.
 ### Następnie:
 ### - dodaj do tego kolumnę "x" o treści "xxx" w każdym wierszu
-### - zapisz otrzymany data.frame do pliku
+### - zapisz otrzymany tibble do pliku
 

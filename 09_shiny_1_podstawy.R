@@ -6,7 +6,6 @@
 # http://shiny.rstudio.com/gallery/widget-gallery.html
 # http://shiny.rstudio.com/articles/layout-guide.html
 
-
 ###################################################
 ### Odpalanie:
 ###  aby odpalić kliknij przycisk "Run App" w prawym
@@ -19,6 +18,8 @@
 # suwaków powoduje automatyczne przegenerowanie
 # wykresu oraz jego parametrów podanych w polu
 # tekstowym
+
+# install.packages('shiny')
 
 library(shiny)
 library(plotly)

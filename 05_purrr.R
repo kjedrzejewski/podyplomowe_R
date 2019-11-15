@@ -63,7 +63,7 @@ microbenchmark::microbenchmark(
   times = 1000
 )
 
-# możemy także wyciągnąć imiona na z wykorzystaniem formuł 
+# możemy także wyciągnąć imiona z wykorzystaniem formuł 
 got_chars %>%
   map_chr(~.x$name) # .x - element listy wejściowej na którym akurat działamy
 
