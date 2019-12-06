@@ -3,7 +3,7 @@
 ###################################################
 
 # https://shiny.rstudio.com/articles/reactivity-overview.html
-# plik: 09_shiny_0_reaktywnosc.R
+# plik: 09_shiny_5_reaktywnosc.R
 
 # install.packages('shiny')
 
@@ -15,7 +15,7 @@ library(dplyr)
 iris_species = iris %>%
   select(Species) %>%
   distinct() %>%
-  `$`('Species') # to jest po prostu dataset_z_lewej$Species, ale jako funkcja, a nie operator
+  .$Species # to jest po prostu dataset_z_lewej$Species, ale jako elementu pipeline'u
   
 
 ui <- fluidPage(
@@ -54,7 +54,7 @@ srv <- function(input, output){
   
   # pod wykresem wypisujemy listę zaznaczonych gatunków
   output$txt1 <- renderPrint({
-    input$species
+    cat("Zawartość 'input$species' to: [", input$species, "]")
   })
   
   # w tabelce wypisujemy dane odnośnie wybranych gatunków.

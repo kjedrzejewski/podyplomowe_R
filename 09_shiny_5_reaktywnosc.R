@@ -114,9 +114,10 @@ isolate(c()) # ale jak poprzednio, tylko za pierwszym razem
 
 ###
 # obserwatory
-# przeliczają się kiedy tylko mogą (a nie w momencie kiedy są odczytywane)
-# nie mają wartości
-# ale jedynie w momencie "flush'a"
+# - przeliczają się kiedy tylko mogą (a nie w 
+#   momencie kiedy są odczytywane). No dobra,
+#   dopiero w momencie flush'a
+# - nie mają wartości
 ###
 ?observe
 

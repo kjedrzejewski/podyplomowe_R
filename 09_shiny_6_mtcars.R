@@ -1,5 +1,5 @@
 ###################################################
-### Zadanie SHINY1
+### Zadanie SHINY2
 ###################################################
 
 # Zrób dashboard podobny do tego: https://kjedrzejewski.shinyapps.io/podyplomowe/
@@ -37,10 +37,9 @@ srv <- function(input, output){
   # Do zmiennej d przypisz wyrażenie reaktywne zawierające podzbiór wierszy mtcars
   # dotyczących samochodów o liczbie biegów wybranej aktualnie w wybierałce "gears"
   # UZUPEŁNIJ STĄD...
-  # d = reactive({
-  #   ...
-  # })
+  d = reactive({
   
+  })
   # ... DOTĄD
   
   output$plot <- renderPlotly({

@@ -40,7 +40,7 @@ diamond_cuts = levels(diamonds$cut)
 
 # jak zwykle tworzymy frontend
 ui <- fluidPage(
-  titlePanel('Gatunki irysów:'),
+  titlePanel('Przeglądarka diamentów:'),
   sidebarLayout(
     # w panelu bocznym dajemy:
     # - grupę checkboxów do wyboru jakości cięć
@@ -196,14 +196,16 @@ srv <- function(input, output){
 }
 
 ###################################################
-### Zadanie SHINY2
+### Zadanie SHINY3
 ###################################################
 
 # - Usuń widget z tabelą
 # - Zamiast tabelki pojawiającej się po najechaniu
 #   na słupek, wstaw pod barplotem, drugiego barplota
-#   który zwizualizuje dane z tej tabelki i pojawi 
-#   się po kliknięciu na słupek na tym pierwszym
+#   który pojawi się po kliknięciu na słupek na tym
+#   pierwszym i zwizualizuje dane z tej tabelki,
+#   pokazując ile jest jest diamentów o każdej
+#   z jakości cięcia
 
 
 shinyApp(ui, srv)
