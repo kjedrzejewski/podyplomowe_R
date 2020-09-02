@@ -59,6 +59,7 @@ class(iris_data)  #   ale lekko ulepszony - tbl - tibble, podstawa tidyverse'u
 spec_csv("iris.csv") # wyświeltenie specyfikacji, w postaci którą możemy łatwo skopiować,
                      # przerobić, i wrzucić jako 'col_types', tak jak niżej
 
+
 iris_data2 = read_csv("iris.csv", col_types = cols(
   sepal_length = col_double(), # tę kolumnę każemy wczytać jako double
   sepal_width = col_double(), # tę też
@@ -88,6 +89,7 @@ iris_data2 = read_csv("iris.csv", col_types = cols_only( # cols_only - pomiń ko
   species = col_factor(c("setosa", "versicolor", "virginica"))
 ))
 iris_data2
+
 
 # to samo co wyżej, ale z wykorzystaniem skróconego zapisu definicji kolumn
 iris_data2 = read_csv("iris.csv", col_types = "dd__c") #  d - double, c - character, _ - skip

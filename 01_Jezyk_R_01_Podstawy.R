@@ -2,7 +2,9 @@
 ### Dodatkowe materiały
 ###################################################
 
-# Prezka: https://bit.ly/2OepmuG
+# Filmy na Yotube: https://www.youtube.com/playlist?list=PLL3-3m0jNaWlA9iLeQlZJQpoXTz3rSTer
+
+# Prezka o zajęciach: https://bit.ly/2OepmuG
 
 # https://www.tutorialspoint.com/r/index.htm
 # http://r4ds.had.co.nz/workflow-basics.html
@@ -16,7 +18,7 @@
 ###################################################
 
 # Znajomość podstaw R jest konieczna aby zrobić
-# cokolwiek w tym języku
+# cokolwiek w tym języku :)
 
 ###################################################
 ### Podstawy RStudio
@@ -51,7 +53,8 @@ print('Hello world!') # np. wykonanie tej linii
 
 # w R dostępne są typowe operatory matermatyczne
 
-?`+` # pomoc do tematu operatorów
+?`+` # pomoc do tematu operatorów arytmetycznych
+?`!` # pomoc do tematu operatorów boolowskich
 
 # operatory arytmetyczne
 1+1 
@@ -77,13 +80,11 @@ NaN
 3==2; 2==2
 3!=2; 2!=2
 
-# operacje logiczne
+# operacje logiczne (boolowskie)
+
 !TRUE #negacja
 TRUE&TRUE; TRUE&FALSE #logiczne AND
 TRUE|TRUE; TRUE|FALSE #logiczne OR
-bitwAnd(5, 4) #101 AND 100 = 100
-bitwOr(5, 4)  #101 OR  100 = 101
-bitwXor(5, 4) #101 XOR 100 = 001
 
 ###################################################
 ### Zmienne i przypisywanie wartości
@@ -130,9 +131,11 @@ var.name3 # niezalecane, może mieć
 ###################################################
 ### Czyszczenie pamięci
 ###################################################
-x = "xxxx" # tworzenie zmiennej, nie musi być wcześniej zadeklarowana
 
-rm(x) #usuwanie zmiennej
+smiec = "ogryzek" # utwórzmy sobie zmienną do usuwania
+skarb = "100 milionów" # oraz taką którą chcemy zachować
+
+rm(smiec) #usuwanie zmiennej 'smiec' ()
 
 gc() #oczyszczenie pamięci zajmowanej przez usunięte zmienne
 # Jest to także wykonywane automatycznie co jakiś czas
@@ -140,26 +143,24 @@ gc() #oczyszczenie pamięci zajmowanej przez usunięte zmienne
 
 # wywołanie tej funkcji zwraca statystyki zużycia pamięci, więc
 # w pratyce gc() częściej się uzywa do sprawdzania statystyk
-# zużycia pamięci, niż do 
+# zużycia pamięci, niż do faktycznego jej zwalniania
 
 
 
 ###################################################
-### Typy danych
+### Proste typy danych
 ###################################################
 
 ?typeof  # w jakim formacie dane są trzymane w pamięci
 ?class   # w jaki sposób dane powinny być interpretowane
 
-
-## Typy proste
-
 #numeric - typ liczbowy, domyślnie zmiennoprzecinkowy
-x = 1
+x = 3.14 # domyśłnie wszystkie liczby są numeric'ami
 x
 typeof(x) # format danych, czyli jak dane są trzymane w pamięci
 class(x)  # klasa, czyli jak dane powinny być interpretowane
 is.numeric(x) # sprawdza czy x jest typu numeric
+
 
 
 #integer - typ liczbowy, zawsze całkowitoliczbowy
@@ -169,7 +170,8 @@ typeof(x)
 class(x)
 is.numeric(x)   # integer jest numericiem
 is.integer(x)
-is.integer(1.0) # ale numeric nie jest integerem
+is.integer(1) # ale numeric nie jest integerem
+
 
 
 #character - ciąg znaków
@@ -194,30 +196,36 @@ x
 strsplit('a-b-c','-') # rozbija na fragmenty porozdzielane '-'
 
 
-#logical - typ logiczny TRUE / FALSE
+
+# logical - typ logiczny TRUE / FALSE
+# można też pisać skrótowo:
+# - T dla TRUE
+# - F dla FALSE
 x = TRUE
 x
 typeof(x)
 class(x)
 is.logical(x)
 
-
 #NA
-x = NA #coś jak NULL w większości języków, ale nie jest pomijane
-       #NA w R znaczy 'nie wiem'. Podobnie jak NULL w SQL 
+x = NA #NA w R znaczy 'nie wiem'. Podobnie jak NULL w SQL 
 x
-typeof(x) # domyślnie logical, ale są też NA innych typów
+typeof(x) # domyślnie logical, ale są też NA innych typów, np. liczbowe albo tekstowe
 class(x)
+is.logical(x)
 is.na(x)
 
-x = as.character(NA) #jak mówiłem, są też NA innych typów
-x
-typeof(x)
-class(x)
-is.na(x)
+# co oznacza to, że NA interpretujemy jako 'nie wiem'?
+TRUE  & TRUE  # AND zwraca TRUE gdy wartości z obu stron są TRUE 
+TRUE  & FALSE # w innym przypadku FALSE
+TRUE  & NA    # w tym przypadku nie wiadomo, czy to powinno być TRUE czy FALSE
+FALSE & NA    # a tutaj nigdy nie może TRUE, więc jest FALSE
 
-# NULL vs NA
-c("a", NULL, NA, "b") # NULL jest całkowicie pomijany, NA nie
+FALSE | TRUE  # OR jest TRUE gdy przynajmniej jedna z wartości jest TRUE
+FALSE | FALSE # więc gdy obie są FALSE, wynik to FALSE
+TRUE  | NA    # tutaj już wiemy, że jest TRUE
+FALSE | NA    # a tutaj wszystko zależy od prawej wartości, więc nie wiemy czy jest TRUE czy FALSE 
+
 
 
 #factor - typ wyliczeniowy
@@ -230,29 +238,146 @@ class(x) # ale ma być interpretowany jako jedna ze zdefiniowanych wartości
 levels(x) # lista różnych wartości przechowywanych w tym factorze
 as.numeric(x)
 
+x[1] < x[3] # sypie błędem, bo w przypadku nieuporządkowanego
+            # factora porównywanie nie ma sensu
+            # (w R indeksy są od 1, a nie od 0) 
 
-# przypisanie liczb do przechowywanych wartości można mienić
-x = factor(c("kot", "kot", "pies", "kot"), levels = c("pies","kot"), ordered = T)
+
+# można także stworzyć wariant uporządkowany 
+x = factor(c("kot", "kot", "pies", "kot"), levels = c("kot","pies"), ordered = T)
 as.numeric(x)
 
+x[1] < x[3] # elementy factora uporządkowanego można porównywać
 
 
 
-## Typy złożone
 
-# wektor
-x = c(1,2,3)
+###################################################
+### Złożone typy danych - wektory i sekwencje
+###################################################
+
+x = c(1,2,3) # c() nie tworzy wektora, jedynie skleja
+             # wektory któtsze (w tym przypadku jednoelementowe);
+             # w R każda zmienna typów prostych jest wektorem
 x
 typeof(x) # niczym nie różni się od zwykłej zniennej przechowującej
 class(x)  # wartośći zmiennoprzecinkowe
-# Tak na prawdę każda zmienna w R jest wektorem. Gdy przypiszemy tylko jedną
-# wartość, to jest to wektor jednoelementowy
 
+# do elementów wektora odwołujemy się po ich indeksach za pomocą [], np.
+x[1] # wybierze pierwszy element (w R pierwszy element ma indeks 1, a nie 0)
+x[c(1,3)] # wybierze elementy pierwszy i trzeci
+
+# możemy także wybierać elementy za pomocą wektora wartości logicznych
+# TRUE - weź, FALSE - pomiń
+x[c(F,T,T)]
+x[(x %% 2) == 1] # wybór elementów nieparzystych
+
+
+# zmiana wybranych elementów wektora
+
+x = c('a','b','c','d','e','f','g') # utwórzmy nowy wektor
+x
+
+x[3] = 'z' # zmieńmy teraz jego trzeci element na 'z
+x
+
+x[c(6,7)] = c(92,68) # możemy też zmieniać kilka elementów
+                     # wektora jednocześnie
+x # tutaj dodatkowo widzimy, że gdy próbowaliśmy wrzucić do wektora
+  # liczby zostały one zamienione automatycznie na ciągi znaków, bo 
+  # ten wektor był tekstowy
+
+x[20] = 'z' # gdy spróbujemy ustawić wartość w wektorze na pozycji
+            # dalszej niż jego długość, wektot ten zostanie wydłużony,
+            # a brakujące elementy zostaną wypełnione NA
+x
+
+
+
+### Generowanie sekwencji:
+### `:` - utwórz sekencję kolejnych liczb całkowitych
+### seq - utwórz sekwencję wartości z dowolnym krokiem
+### rep - powtórz elementy ileś razy
+
+x = 1:5 # kolejne liczby od 1 do 5
+x
+
+x = 5:1 # kolejne liczby od 5 do 1
+x
+
+
+# tworzenie sekwencji liczbowych
+?seq # czyli rzut okiem do dokumentacji
+x = seq(1, 9, 2) # liczby od 1 do 9 z krokiem co 2
+x = seq(from = 1, to = 9, by = 2) # to samo, ale z nazwami atrybutów
+x
+
+?rep # zobaczmy dokumentację
+x = rep(1:3, 2) # powtórz wektor 1:3 dwukrotnie
+x
+
+x = rep(1:3, each = 2) # powtórz każdy element drugiego wektora
+x
+
+
+# operacje na wektorach różnej długości
+
+1:6 + 2:7 # dodaj do siebie elementy na odpowiadających sobie pozycjach
+1:6 * 2 # pomnóż każdy element wektora
+1:6 + 2 # do każdego elementu dodaj
+1:6 + 1:3 # krótszy wektor został powtórzony
+# 1 2 3 4 5 6
+# 1 2 3 1 2 3
+# ===========
+# 2 4 6 5 7 9
+
+1:5 + 1:3 # nie można dodać, bo długość żadnego wektora nie jest wielokrotnością długości drugiego
+
+
+
+# sprawdzanie czy wektor zawiera określone elementy
+
+4 %in% 1:5 # czy 4 należy do ciągu 1:5
+6 %in% 1:5 # czy 6 należy do ciągu 1:5
+1:2 %in% 1:5 # czy poszczególne elementy ciągu 1:2 należą do ciągu 1:5
+all(1:2 %in% 1:5) # prawda, jeżeli wszystkie to prawda
+1:2 %in% 2:5
+all(1:2 %in% 2:5) # TRUE tylko wtedy gdy wszystkie elementy wektora są TRUE
+
+
+
+
+
+###################################################
+### Zadanie WEK1
+###################################################
+
+### Utwórz wektor postaci:
+### a) 1, 2, 3, ..., 99, 100, 99, ..., 3, 2, 1
+### b) 1, 2, 3, 1, 2, 3, ...   (10 powtórzeń)
+### c) 1, 1, 1, ... , 3, 3, 3, ...   (10 x 1, 10 x 3)
+### d) 1, 4, 7, 10, ..., 100
+### e) 1, 4, 9, 16, ..., 81, 100
+### f) 1, 2, 2, 3, 3, 3, ..., 100, 100, 100, 100
+###    (1 x 1, 2 x 2, 3 x 3, ..., 99 x 99, 100 x 100)
+### g) a1, b10, c100, d1000, ..., j1000000000 (9 zer)
+
+letters                # wektor z kolejnymi literami alfabetu
+as.integer(2e+8)       # zamienia z numeric na integer
+as.integer(200000000)  # to m.in. wymusza notację zwykłą
+                       # zamiast wykładniczej
+
+
+
+
+###################################################
+### Złożone typy danych - macierze
+###################################################
 
 #matrix - dwuwymaiarowa macierz
 x = matrix(c(1,2,3,4), nrow = 2, ncol = 2) # trzeba podać wektor z danymi, liczbę wierszy i kolumn
 x
-typeof(x) # tak na prawdę do dalej jest wektor zmiennoprzecinkowy...
+typeof(x) # tak na prawdę to dalej jest wektor zmiennoprzecinkowy...
 class(x)  # ... ale R wie, że ma go interpretować jako macierz
 
 dim(x) # jakie ma wymiary
@@ -272,43 +397,67 @@ x * x # mnożenie skalarne
 x %*% x # mnożenie macierzowe
 
 
-#array - macierz o liczbie wymiarów > 2
+
+#array - macierz o liczbie wymiarów >= 2
 x = array(1:8, c(2,2,2))
 x
 typeof(x)
 class(x)
 
 x
-x[,1,] # wybieramy elementy, które na 1-szym i 3-cim wymiarze mają dowolną pozycję, a na drugim pozycję 1
+x[,1,] # wybieramy elementy, z dowolnych pozycji na 1-szym i 3-cim wymiarze, a na drugim z pozycji 1
 
 
-#list - zmienna zawierająca elementy o potencjalnie różnych typach
+
+###################################################
+### Złożone typy danych - listy, czyli zmienne
+### zawierające elementy o potencjalnie różnych typach
+###################################################
+
 x = list(a = 1, b = 2, c = "s") # zbiór nazwanych wartości
 x
 typeof(x)
 class(x)
 
 
-x = list(a = 1, b = 2, c = list(d = 3, e = 4)) # może zawierać listy
+# może zawierać elementy róznych typów, w tym też np. listy
+x = list(a = 1, b = 1:5, c = list(d = 3, e = 4), f = 'abc')
 
 x
 str(x) # trochę ładniej wypisuje strukturę
+
 x$a # wartość elementu listy o nazwie a
 x[2] # podlista zawierająca drugi element, wynik jest listą z jednym elementem
 x[[2]] # wartość drugiego elementu
 x["a"]  # podlista, po nazwie
 x[["a"]] # wartość elementu o nazwie a
 x[c("a", "b")] # podlista zawierająca elementy a i b
-x[c(T,T,F)] # wektorem logicznym
+x[c(T,T,F,F)] # wektorem logicznym
 
 
 x$c
 x$d # nie ma, bo d nie jest elementem x...
 x$c$d # ... a x$c
 
+# dodawanie nowych elementów listy
+x$g = 'nowy element'
+x[c('h','i')] = c(10,12)
+x[8] = 'element nienazwany'
+
+# zmiana elementów listy
+x$a = 'kiedyś tu była jedynka'
+
+#usuwanie elementów listy
+x$c = NULL
+x[2] = NULL
 
 
-#data.frame, czyli coś jak SQL-owa tabela
+
+###################################################
+### Złożone typy danych - data.frame'y, czyli coś
+### podobnego to tabel SQL-owych
+###################################################
+
 x = data.frame(
   a = c(1,2),
   b = c("a","b"),
@@ -320,132 +469,67 @@ x
 typeof(x) # bo technicznie jest listą wektorów o tej samej długości
 class(x)  # tylko, że R wie, że ma interpretować inaczej
 
-x[1] #kolumna jako data.frame (tak na prawdę, to pierwszy element listy)
-x[,1] #kolumna jako wektor
-x[,"a"] #albo tak
-x[,c(T,F,F,F )] # albo tak
-x$a #albo tak, no bo lista
-x[[1]] #tak też, no bo lista
-x[1,] #wiersz (data.frame)
-x[c(T,F),] # albo wybierając wektorem logicznym
 
+# wybór kolumn (jako data.frame)
+x[1] #kolumna jako data.frame (tak naprawdę, to pierwszy element listy)
 x["b"] # wybór kolumny b
 x[c("b","c")] # wybór kolumny a i b
 x[c(F,T,T,F)] # F - weź kolumnę, T - pomiń kolumnę
 
-x[1,3]
-x[1,"c"]
-x[c(T,F),c(F,F,T,F)]
+# wybór pojedynczej kolumny (jako wektor)
+x[,1] #kolumna jako wektor
+x[,"a"] #albo tak
+x[,c(T,F,F,F)] # albo tak
+x$a #albo tak, no bo lista
+x[[1]] #tak też, no bo lista
 
+# wybór wierszy (jako data.frame)
+x[1,] # jako indeks wiersza
+x[c(T,F),] # albo wektorem logicznym
+
+# wybór konkretnych elementów
+x[1,4]
+x[1,"d"]
+x[c(T,F),c(F,F,F,T)]
+
+# nazwy kolumn i wierszy
 colnames(x) # odczytanie nazw kolumn
 rownames(x) # odczytanie nazw wierszy
 rownames(x) = c("Mietek", "Zdzisiek") # przypisanie nazw wierszy
 x
 x["Mietek","d"] # odwołanie się do kolumny i wiersza po ich nazwach
 
+
+## Modyfikacja data.frame'ów
+
+# nadpisywanie konkretnych elementów
+x[1,"a"]
+x[1,"a"] = 100
+x
+
 #dodawanie wiersza (możemy dodać data.frame, albo listę)
-x = rbind(x, "Stasiu" = data.frame(a = 3, b = "c", c = F, d = "C"))
+df2 = data.frame(a = 3, b = "c", c = F, d = "C", row.names = "Stasiu") # utwórzmy data.frame z nowym wierszem...
+df2
+
+x = rbind(x, df2) # ... i go doklejmy
 x
-x = rbind(x, "Kalasanty" = list(a = 4, b = "d", c = T, d = "D")) # nie poszerza listy poziomów factora (czemu nie wiem)
-x
-x = rbind(x, "Hilary" = list(a = 5, b = "c", c = F, d = "C"))
+x = rbind(x, "Hilary" = list(a = 5, b = "c", c = F, d = "C")) # alternatywnie, możemy nowy wiersz jako listę wartości
 x
 
 
 #dodawanie kolumny
-x = cbind(x, e = c(10, 20, 30, 40, 50)) # możemy dokleić wektor jako kolumnę
-x
-x = cbind(x, data.frame(f = c(2, 3, 5, 8, 13))) # możemy też skleić dwa data.framy
-x
 
-###################################################
-### Wektory
-###################################################
+df2 = data.frame(e = c(3, 5, 8, 13)) # utwórzmy data.frame z nową kolumną...
+df2
 
-x = c(1,2,3) # wyliczamy elementy
-x
-x = c(1, c(2,3)) #tak na prawdę to c() skleja wektory
-                 #w tym przypadku wektor jednoelementowy
-                 #z wektorem dwuelementowym
+x = cbind(x, df2) # ... i go doklejmy
 x
 
-x = 1:5 # kolejne liczby od 1 do 5
+x = cbind(x, f = c(20, 30, 40, 50)) # możemy dokleić wektor jako kolumnę
 x
 
-x = 5:1 # kolejne liczby od 5 do 1
+x$g = 1:4
 x
-
-
-x[2:4] # wybór od 2. do 4. elementu
-x[-c(1,5)] # pominięcie 1. i 5. elementu, w tym przypadku to samo co wyżej
-x[c(F,T,T,T,F)] # to samo, ale wektorem logicznym
-x[(x %% 2) == 0] # wybór elementów parzystych
-
-
-# wybranie elementów oznacza także możliwość ich zmiany
-x = 1:10
-x # jak widać, jest to wektor z kolejnymi liczbami od 1 do 10
-x[5] = 1000 # zmieniamy 5-ty element w 1000
-x
-x[7:9] = 40:42 # możemy też zmieniać całe zakresy
-x
-x[20] = 512 # możemy też ustawiać wartość dalsze niż długość wektora
-x           # wtedy zostanie on wydłużony, a w miejsca dodane i nieustawione, zostanie wstawione NA
-# podobnie zresztą jest też w przypadku list, data.frame'ów, itd.
-
-
-# tworzenie sekwencji liczbowe
-?seq # czyli rzut okiem do dokumentacji
-x = seq(1, 9, 2) # liczby od 1 do 9 z krokiem co 2
-x = seq(from = 1, to = 9, by = 2) # to samo, ale z nazwami atrybutów
-x
-
-x = rep(1:3, 2) # powtórz wektor 1:3 dwukrotnie
-x
-
-x = rep(1:3, each = 2) # powtórz każdy element drugiego wektora
-x
-
-x = 1:5
-x
-x * 2 # pomnóż każdy element wektora
-x + 2 # do każdego elementu dodaj
-x + 2:6 # dodaj do siebie elementy na odpowiadających sobie pozycjach
-x + 1:3 # nie można dodać, bo długość żadnego wektora nie jest wielokrotnością długości drugiego
-
-1:6 + 1:3
-# 1 2 3 4 5 6
-# 1 2 3 1 2 3
-# ===========
-# 2 4 6 5 7 9
-
-
-4 %in% 1:5 # czy 4 należy do ciągu 1:5
-6 %in% 1:5 # czy 6 należy do ciągu 1:5
-1:2 %in% 1:5 # czy poszczególne elementy ciągu 1:2 należą do ciągu 1:5
-all(1:2 %in% 1:5) # prawda, jeżeli wszystkie to prawda
-1:2 %in% 2:5
-all(1:2 %in% 2:5) # TRUE tylko wtedy gdy wszystkie elementy wektora są TRUE
-
-
-###################################################
-### Zadanie WEK1
-###################################################
-
-### Utwórz wektor postaci:
-### a) 1, 2, 3, ..., 99, 100, 99, ..., 3, 2, 1
-### b) 1, 2, 3, 1, 2, 3, ...   (10 powtórzeń)
-### c) 1, 1, 1, ... , 3, 3, 3, ...   (10 x 1, 10 x 3)
-### d) 1, 2, 2, 3, 3, 3, ..., 100, 100, 100, 100
-###    (1 x 1, 2 x 2, 3 x 3, ..., 99 x 99, 100 x 100)
-### e) 1, 4, 7, 10, ..., 100
-### f) 1, 4, 9, 16, ..., 81, 100
-### g) a1, b10, c100, d1000, ..., j1000000000 (9 zer)
-
-letters                # wektor z kolejnymi literami alfabetu
-as.integer(2e+8)       # zamienia z numeric na integer
-as.integer(200000000)  # to m.in. wymusza notację zwykłą
-                       # zamiast wykładniczej
 
 
 ###################################################
@@ -463,7 +547,6 @@ log(1) #logarytm naturalny
 exp(1) #e do potęgi...
 log2(2) #log o podstawie 2
 log(4, 2) #logarytm o wybranej podstawie 
-pi #liczba pi
 choose(6,2) #dwumian Newtona: 6!/(2!*(6-2)!), liczba możliwych różnych par spośród sześciu elementów
 sqrt(4)
 ceiling(4.2)
@@ -487,12 +570,21 @@ x = data.frame(
   d = factor(c("A","B","B","B","B")),
   stringsAsFactors = F
 )
-summary(x) # ogólne podumowanie każdej kolumny
+summary(x) # ogólne podsumowanie każdej kolumny
 
 x = seq(from = -4, to = 4, by = 0.1)
 y = dnorm(x)
 plot(x, y) # ale są lepsze sposoby na robienie wykresów (np. plotly, ale o tym później)
 plot(x, y, type = "l", xlab = "Oś X", ylab = "Oś Y")
+
+# argumenty podane z nazwy i pozycyjnie
+# (wszystkie wywołania poniżej są identyczne)
+seq(0, 4, 1) # każdy argument jest przekazany pozycyjnie
+seq(from = 0, to = 4, by = 1) # tym razem każdy argument jest nazwany
+seq(by = 1, from = 0, to = 4) # kiedy nazywamy argumenty, ich kolejność nie ma znaczenia
+seq(by = 1, 0, 4) # kiedy część argumentów przekażemy pozycyjnie, a część w sposób nazwany,
+seq(0, 1, to = 4) # to argumenty pozycyjne zostaną przypisane w kolejności do pozycji
+                  # dla których wartości nie zostały określone
 
 
 ###################################################
@@ -514,7 +606,7 @@ require(tidyversexxx) # wyświetla jedynie komunikat
 
 ###################################################
 ### Tworzenie funkcji
-### name <- function(argumenty){
+### name <- function(arguments){
 ###   ... body ...
 ### }
 ###
@@ -537,6 +629,33 @@ avg <- function(data) {
 }
 
 avg(1:5)
+
+
+### Argumenty z domyślną wartością
+
+power_avg <- function(data, power = 1){ # power ma domyślną wartość 1
+  d = data ^ power
+  m = mean(d)
+  m ^ (1/power)
+}
+
+power_avg(1:5) #nie ustawiono wartości 'power', zostala przyjęta domyślna wartość, czyli 1
+power_avg(1:5, power = 2) #tutaj podaliśmy, więc wynosi 2
+power_avg(1:5, 2) # to samo co linia wyżej, bo power to drugi argument, więc domyślnie
+# ustawiany jest na wartość drugiego nienazwanego argumentu
+power_avg(1:5, power = -1)
+
+
+# operator ..., czyli wszystkie argumenty wywołania, które nie zostały dopasowane do żadnego argumentu
+# poszczególne argumenty to ..1, ..2, ..3, ..4, etc.
+moja_wspaniala_lista <- function(name, ...){ # zróbmy sobie funkcję, która tworzy listę, ale pierwszy argument
+  list(imię = name, ...)                     # wstawia do niej, jako element o nazwie 'imię' 
+}
+
+x = moja_wspaniala_lista("Zdziś", x = 7, y = "abc")
+x
+
+
 
 
 #### WAŻNE!!! ####
@@ -608,29 +727,30 @@ if(2 > 3) {
 
 
 
-
-x = c(1,2,3,4)
-
 # wektorowa wersja ifa
 # jeżeli na danej pozycji pierwszego argumentu jest TRUE,
 # to zwróć element z odpowiadającej pozycji drugiego wektora,
 # a jak FALSE to z trzeciego
+
+x = c(1,2,3,4)
+
 ifelse(x>2, "większe", "nie większe")
 
 
-x = data.frame(
+d = data.frame(
   a = c(1,2,3,4),
   b = c("B1","B2","B3","B4"),
   c = c("C1","C2","C3","C4"),
   d = c("D1","D2","D3","D4"),
   stringsAsFactors = F
 )
+d
 
 # dodajmy kolumnę e, która:
 # w nieparzystych wierszach zawiera element z kolumny b,
 # a w parzystych element z kolumny c
-x$e = ifelse((x$a %% 2) == 1, x$b, x$c)
-x
+d$e = ifelse((d$a %% 2) == 1, d$b, d$c)
+d
 
 
 ###################################################
@@ -761,34 +881,6 @@ rm(mean) # usuwamy funkcję tak samo jak zmienną, bo właśnie nią jest
 mean(1:5)
 conflicts() # konfliktu po usunięciu już nie ma
 avg(1:5) # nasza funkcja dalej istnieje pod oryginalną nazwą
-
-
-
-
-### Argumenty z domyślną wartością
-
-power_avg <- function(data, power = 1){ # power ma domyślną wartość 1
-  d = data ^ power
-  m = mean(d)
-  m ^ (1/power)
-}
-
-power_avg(1:5) #nie ustawiono wartości 'power', zostala przyjęta domyślna wartość, czyli 1
-power_avg(1:5, power = 2) #tutaj podaliśmy, więc wynosi 2
-power_avg(1:5, 2) # to samo co linia wyżej, bo power to drugi argument, więc domyślnie
-                  # ustawiany jest na wartość drugiego nienazwanego argumentu
-power_avg(1:5, power = -1)
-
-
-# operator ..., czyli wszystkie argumenty wywołania, które nie zostały dopasowane do żadnego argumentu
-# poszczególne argumenty to ..1, ..2, ..3, ..4, etc.
-moja_wspaniala_lista <- function(name, ...){ # zróbmy sobie funkcję, która tworzy listę, ale pierwszy argument
-  list(imię = name, ...)                     # wstawia do niej, jako element o nazwie 'imię' 
-}
-
-x = moja_wspaniala_lista("Zdziś", x = 7, y = "abc")
-x
-
 
 
 ###################################################

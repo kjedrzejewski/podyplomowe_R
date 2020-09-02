@@ -7,6 +7,13 @@
 # https://github.com/rstudio/cheatsheets/raw/master/purrr.pdf
 
 ###################################################
+### Do czego to się przyda?
+###################################################
+
+# Efektywne przetwarzanie danych w sposób
+# iteracyjny
+
+###################################################
 # purrr - pakiet pozwalający wydajnie wykonywać 
 # funkcje na każdym elemencie wektora lub listy
 # .. albo nawet i kilku list naraz
@@ -15,11 +22,12 @@
 
 # załadujmy pakiet purrr
 library(purrr)
+library(tidyverse)
 
 # oraz pakiet z którego weżmiemy dataset
 library(repurrrsive)
 
-?got_chars # dataset którego będziemy używać (lista lists)
+?got_chars # dataset którego będziemy używać (lista list)
 View(got_chars)
 # jest to lista zawierając jako elementy listy
 # z informacjami o bohaterach z Gry o tron
@@ -38,38 +46,21 @@ map(got_chars, 'name') # zwraca listę
 got_chars %>%
   map('name')
 
-# tym razem weźmy je jako wektor characterów
-got_chars %>%
-  map_chr('name') # zwraca wektor, bo funkcje map_* dokonują konwersji (ale też wymuszają konkretny typ)
 
 # tak naprawdę, to drugi parametr będący wektorem jest przekształcany na prostą
 # funkcję która z każdego elementu listy wyciąga jej element o podanej nazwie
 got_chars %>%
   map(function(x){ x$name }) # funkcja z jednym parametrem
 
-# no i to robi to samo co użycie lapply
-got_chars %>%
-  lapply(function(x){ x$name })
-
-# Co ciekawe, w takich prostych przypadkach lepiej
-# sprawdza się lapply (jest trochę szybszy)
-# Główną zaletą purrr'a jednak jest to, iż jest on
-# dużo bardziej 'przewidywalny'
-microbenchmark::microbenchmark(
-  got_chars %>%
-    map(function(x){ x$name }),
-  got_chars %>%
-    lapply(function(x){ x$name }),
-  times = 1000
-)
 
 # możemy także wyciągnąć imiona z wykorzystaniem formuł 
 got_chars %>%
-  map_chr(~.x$name) # .x - element listy wejściowej na którym akurat działamy
+  map(~.x$name) # .x - element listy wejściowej na którym akurat działamy
 
 ?'~'
 ?formula # więcej o formułach, an teraz wystarczy wiedzieć, że
          # formuły służą do przechowywania kodu, który ma być wykonany
+
 
 # wyciągnijmy sobie tylko konkretny podzbiór elementów tych list
 got_chars %>%
@@ -123,7 +114,8 @@ got_chars %>%
 
 
 # ... albo skorzystać z map_int(), które zmieni listę
-# na wektor automatycznie
+# automatycznie na wektor integerów. Dodatkowo sprawdzi,
+# czy typ taka konwersja jest możliwa. Jeżeli nie, sypnie błędem
 got_chars %>%
   map_int(~length(.x$tvSeries))
 
@@ -149,6 +141,9 @@ got_chars %>%
   })
 
 # wtedy możemy np. kontynuować przetwarzanie dplyrem
+# np. policzmy w ilu średnio sezonach pojawiają się
+# postać zależnie czy jest mężczyzną czy kobietą
+
 library(dplyr)
 
 got_chars %>%
