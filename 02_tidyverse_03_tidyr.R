@@ -5,7 +5,22 @@
 # https://tidyr.tidyverse.org
 # http://r4ds.had.co.nz/tidy-data.html
 # https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html
-# https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf
+# https://github.com/rstudio/cheatsheets/raw/master/data-import.pdf
+
+###################################################
+### Do czego to się przyda?
+###################################################
+
+# - czyszczenie danych importowanych do R
+# - rozszerzenie funkcjonalności dplyr'a o nowe
+#   funkcje
+
+###################################################
+###################################################
+
+# install.packages('tidyverse')
+library(tidyverse) # ładuje tidyr-a i jednocześnie wiele
+                   # innych pakietów z hadleyversu
 
 ###################################################
 ### Pakiet tidyr
@@ -14,20 +29,7 @@
 ###
 ### pivot_wider - odwrotnie niż pivot_longer
 ### pivot_wider(dane, names_from = 'cecha', values_from = 'wartość')
-###
-### separate - podział kolumny na kilka
-### separate(dataset, kolumna_źródłowa, kolumny_docelowe)
-###
-### unite - zrobienie z kilku kolumn jednej
-### unite(dataset, kolumna_docelowa, kolumna_źródłowa1, kolumna_źródłowa2, ...)
-###
-### są też inne funkcje w pakiecie, np. ?expand
-### ... a te wymienione mają dużo większe możliwości niż pokazuję poniżej
 ###################################################
-
-# install.packages("tidyverse")
-library(tidyverse) # ładuje tidyr-a i wiele innych pakietów
-                   # z hadleyversu
 
 # przygotujmy sobie dataset tak samo jak w przypadku dplyra
 data = mtcars %>%
@@ -71,6 +73,16 @@ data2 %>%
   View()
 
 
+###################################################
+### separate - podział kolumny na kilka
+### separate(dataset, kolumna_źródłowa, kolumny_docelowe)
+###
+### unite - zrobienie z kilku kolumn jednej
+### unite(dataset, kolumna_docelowa, kolumna_źródłowa1, kolumna_źródłowa2, ...)
+###
+### są też inne funkcje w pakiecie, np. ?expand
+### ... a te wymienione mają dużo większe możliwości niż pokazuję poniżej
+###################################################
 
 
 # rozdzielanie jednej kolumny na kilka
@@ -82,8 +94,7 @@ data3 # jak widać zawiera tylko id, oraz jedną kolumnę tekstową
 
 # rozdzielmy tę kolumnę na trzy
 data3 %>%
-  separate(imie_i_nazwisko, c("imie","inicjal","nazwisko")) # domyślnym podział jest wg. wszystkiego co nie jest literą albo cyfrą
-
+  separate(imie_i_nazwisko, c("imie","inicjal","nazwisko"), sep = " ")
 
 
 
@@ -91,16 +102,64 @@ data3 %>%
 ?unite
 
 data4 = data3 %>%
-  separate(
-    imie_i_nazwisko,
-    c("imie","inicjal","nazwisko"),
-    "[^[:alnum:].]+" # bo chcemy jednak mieć też kropkę w inicjale
-  )
+  separate(imie_i_nazwisko, c("imie","inicjal","nazwisko"), " ")
 
 data4 # mamy osobno imię, inicjał oraz nazwisko
 
 data4 %>%
   unite("dane_osobowe", imie, inicjal, nazwisko, sep = ' ')
+
+
+
+###################################################
+### W pakiecie tidyr jest wiele więcej
+### funkcji...
+### ... a te pokazane powyżej mają dużo większe
+### możliwości
+###################################################
+
+# ?complete() dodaje wiersze zawierające
+# brakujące kombinacje wartości ze wskazanych
+# kolumn
+
+mtcars %>%
+  tibble::rownames_to_column('name') %>%
+  group_by(cyl, vs) %>%
+  summarise(mean_mpg = mean(mpg)) # jak widać nie ma wartości dla
+                                  # kombinacji cyl = 8, vs = 1
+
+mtcars %>%
+  tibble::rownames_to_column('name') %>%
+  complete(cyl, vs) %>% # dodajemy sztuczny wiersz dla tej kombinacji
+  group_by(cyl, vs) %>%
+  summarise(mean_mpg = mean(mpg)) # i teraz ona już pojawia się w wyniku
+
+
+
+# ?nest() pozwala fragment większej tabeli opakować
+# w tibble, i umieścić go jako wartość w kolumnie
+# To też pokazuje pewną różnicę między standardowymi
+# data.frame'ami i tibble'ami: kolumny w tibble'ach
+# mogą być listami, co umożliwia przechowywanie w nich
+# wartości innych typów, niż typy proste
+
+
+mtcars %>%
+  tibble::rownames_to_column('name') %>%
+  group_by(cyl) %>%
+  nest() # wszystkie kolumny według których nie grupowaliśmy,
+         # zostały umieszczone w osobnych tibble'ach, do 
+         # których zostały przeniesione wszystkie wiersze
+         # z każdej grupy. Nowo utworzone tibble'o zostały 
+         # osadzone jako elementy nowo utworzonej kolumny data
+
+
+mtcars %>%
+  tibble::rownames_to_column('name') %>%
+  group_by(cyl) %>%
+  nest() %>%
+  {.$data[[1]]} # wyciągnijmy jeden z tych tibble'i
+                # i zobaczmy co zawiera
 
 
 ###################################################

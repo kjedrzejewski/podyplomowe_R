@@ -5,12 +5,25 @@
 # https://dplyr.tidyverse.org
 # http://r4ds.had.co.nz/relational-data.html
 # https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html
-# https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html
 # https://cran.r-project.org/web/packages/dplyr/vignettes/two-table.html
 # https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf
 
 
+###################################################
+### Do czego to się przyda?
+###################################################
+
+# Przetwarzanie danych tabelarycznych w bardzo
+# przystępny sposób
+
+
+###################################################
+###################################################
+
+# install.packages('dplyr')
+# install.packages('tidyverse')
 library(dplyr)
+
 
 ###################################################
 ### Operator pipe: %>%
@@ -38,6 +51,15 @@ paste("Krzychu") %>% paste("poszedł") %>% paste("do") %>% paste("sklepu")
 
 
 ###################################################
+### tibble - ulepszony data.frame
+###################################################
+
+vignette('tibble')
+
+as_tibble(iris) # konwertuje zmienną na tibble
+
+
+###################################################
 ### W ramach tej lekcji będziemy pracować dużo ze
 ### ze zbiorem mtcars. Aby dowiedzieć się o nim
 ### więcej wpisz ?mtcars
@@ -46,10 +68,10 @@ paste("Krzychu") %>% paste("poszedł") %>% paste("do") %>% paste("sklepu")
 ?mtcars
 
 # przygotowanie datasetu
-data = as_tibble(mtcars) # konwersja na tibbla, ale na data.frame też by działało
-                         # tibble to taki lepszy data.frame
-data = bind_cols(name = row.names(mtcars), data) # dodanie nazw jako kolumny, bo tidyverse nie wspiera nazw wierszy
-                                                 # ... i jest to uzasadnione
+data = mtcars %>%
+  tibble::rownames_to_column('name') %>% # dodanie nazw jako kolumny, bo tidyverse nie wspiera nazw wierszy
+                                         # ... i jest to uzasadnione
+  as_tibble()
 
 data # ostatecznie tabelka wygląda tak
 
@@ -60,6 +82,7 @@ data # ostatecznie tabelka wygląda tak
 
 data %>%
   View()
+
 
 ###################################################
 ### select - wybranie kolumn i usunięcie reszty
@@ -91,6 +114,7 @@ data2 = data %>%
 
 data2
 
+
 ###################################################
 ### arrange - sortowanie według podanych kolumn
 ### arrange(dataset, kolumna1, kolumna2, ...)
@@ -117,19 +141,17 @@ data %>%
 ?filter
 
 data %>%
-  filter(gear == 4) %>% # tylko wiersza mające gear == 4
-  View()
+  filter(gear == 4) # tylko wiersza mające gear == 4
 
 data %>%
-  filter(gear == 4, carb == 4) %>% # tylko wiersza mające grear == 4 oraz carb == 4
-  View()
+  filter(gear == 4, carb == 4) # tylko wiersza mające grear == 4 oraz carb == 4
 
 
 data %>%
   filter(gear == 4) %>%
-  filter(carb == 4) %>%
-  View() # działa tak samo jak poprzednie, ale jest wolniej niż z warunkami w jednym wywołaniu
-         # filter(), bo dataset musi zostać przetworzony dwukrotnie
+  filter(carb == 4)
+  # działa tak samo jak poprzednie, ale jest wolniej niż z warunkami w jednym wywołaniu
+  # filter(), bo dataset musi zostać przetworzony dwukrotnie
 
 
 # prównajmy prędkość przetwarzania:
@@ -146,8 +168,7 @@ microbenchmark::microbenchmark(  # :: - wywołaj funckcję z pakietu bez jego ł
 # jak chcemy zrobić OR, czyli przynajmniej jeden z warunków musi być spełniony,
 # a nie wszystkie
 data %>%
-  filter(gear == 4 | carb == 4) %>% # jak wszędzie indziej w R
-  View()
+  filter(gear == 4 | carb == 4) # jak wszędzie indziej w R
 
 
 ###################################################
@@ -161,17 +182,16 @@ data %>%
 # ją stworzymy
 
 data %>%
-  mutate(letter = 'x') %>% # tworzy kolumnę letter o wartości 'x' w każdym wierszu
-  View()
+  mutate(letter = 'x') # tworzy kolumnę letter o wartości 'x' w każdym wierszu
 
 data %>%
-  mutate(kpl = 0.4251 * mpg) %>% # tworzymy kolumnę zawierającą przeliczenie mil na galon, na kilometry na litr
-  View()
-
+  mutate(kpl = 0.4251 * mpg) # tworzymy kolumnę zawierającą przeliczenie mil na galon, na kilometry na litr
 
 data %>%
-  transmute(name, kpl = 0.4251 * mpg) %>% # transmute() działa podobnie jak mutate(), ale usuwa kolumny nie wymienione
-  View()
+  transmute(name, kpl = 0.4251 * mpg) # transmute() działa podobnie jak mutate(), ale usuwa kolumny nie wymienione
+
+data %>%
+  mutate(mean_mpg = mean(mpg)) # dopisujemy wartość średnią mpg do każdego wiersza
 
 
 ### case_when(warunek1 ~ wartość1, warunek2 ~ wartość2, ...., [TRUE ~ domyślna wartość])
@@ -210,9 +230,6 @@ data %>%
     min_qsec = min(qsec), # najniższy czas na ćwierć mili
     count = n()  # n() - liczba wierszy w grupie
   )
-# nie ma View(), więc wypisało na konsoli
-
-
 
 
 ###################################################
@@ -253,14 +270,20 @@ data = mtcars %>%
 ?group_by
 
 data %>%
-  group_by(cyl) %>% # dodaje informację o podziale na grupy wg liczby cylindrów
-  summarise(mean(wt))# wylicza średnią wartość wt w każdej grupie (bo grupy są zdefiniowane)
+  group_by(cyl) # samo wywołanie group_by() powoduje jedynie dodanie
+                # informacji o ustawionym grupowaniu
+
+data %>%
+  group_by(cyl) %>%
+  summarise(mean(wt)) # summarise wykorzystuję tę informację, np. w tym przypadku
+                      # wylicza średnią wartość wt w każdej grupie (bo grupy są zdefiniowane)
 
 
 data %>%
   group_by(cyl) %>%
-  mutate(group_wt_mean = mean(wt)) # mutate działa też po pogrupowaniu, wtedy
-                                   # do każdego wiersza została dodana średnia wyliczona dla danej grupy
+  mutate(group_wt_mean = mean(wt)) %>% # mutate działa też po pogrupowaniu, wtedy
+                                       # do każdego wiersza została dodana średnia wyliczona dla danej grupy
+  View()
 
 
 data %>%
@@ -289,7 +312,7 @@ data %>% # kolumna według której grupujemy nie musi być wcześniej wyliczona
 ###################################################
 ?do
 
-# funkcja poniżej oblicza przedziały ufności metodą bootstrap
+# funkcja poniżej oblicza 5%-owe przedziały ufności metodą bootstrapingu
 boot_ci <- function (data, FUN, rep = 10000) {
   if(length(data) > 1){
     res <- c()
@@ -359,7 +382,7 @@ tax = tibble(
 )
 
 data %>%
-  inner_join(tax, by = c("cyl" = "cylindry")) %>% # tej sytuacji musimy podać obie nazwy kolumn
+  inner_join(tax, by = c("cyl" = "cylindry")) %>% # w tej sytuacji musimy podać obie nazwy kolumn
                                                   # technicznie rzecz biorąc w wektorze przekazywanym w by
                                                   # 'cyl' jest nazwą elementu o treści 'cylindry'
   View()
