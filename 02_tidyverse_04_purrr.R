@@ -2,26 +2,29 @@
 ### Dodatkowe materiały
 ###################################################
 
-# http://r4ds.had.co.nz/iteration.html#the-map-functions
 # https://purrr.tidyverse.org
+# http://r4ds.had.co.nz/iteration.html#the-map-functions
 # https://github.com/rstudio/cheatsheets/raw/master/purrr.pdf
+# https://jennybc.github.io/purrr-tutorial/index.html
+
+# https://davisvaughan.github.io/furrr/
 
 ###################################################
 ### Do czego to się przyda?
 ###################################################
 
-# Efektywne przetwarzanie danych w sposób
-# iteracyjny
+# - Wykorzystanie koncepcji obliczeń map-reduce
+# - Efektywne przetwarzanie danych w sposób
+#   iteracyjny
 
 ###################################################
 # purrr - pakiet pozwalający wydajnie wykonywać 
-# funkcje na każdym elemencie wektora lub listy
+# efektywnie na każdym elemencie wektora lub listy
 # .. albo nawet i kilku list naraz
 # i są to funkcje lepsze niż: apply, lapply, itp.
 ###################################################
 
-# załadujmy pakiet purrr
-library(purrr)
+# załadujmy pakiet purrr (razem z resztą tidyverse)
 library(tidyverse)
 
 # oraz pakiet z którego weżmiemy dataset
@@ -33,21 +36,30 @@ View(got_chars)
 # z informacjami o bohaterach z Gry o tron
 
 ###################################################
-### map - iteracja po liście i wykonanie operacji
+### map - iteracja po liście lub wektorze i
+###       wykonanie podanej operacji dla
+###       każdego elementu
 ### map(lista, funkcja, dodatkowe_parametry...)
 ###################################################
 
 ?map
 
-# wyciągnijmy same imiona bohaterów (element każdej składowej listy o nazwie 'name')
-map(got_chars, 'name') # zwraca listę
+# rzućmy okiem na najprostszy przypadek: liczenie
+# wartości pierwiastka z każdego elementu wektora 1:10
+map(1:10, sqrt)
+# oczywiście takie użycie funckji map() nie ma sensu,
+# skoro funkcja sqrt() może przyjmować na wejście
+# wektor do spierwiastkowania
 
-# no możemy oczywiście korzystać z %>%
+# więc zróbmy coś sensowniejszego:
+# wyciągnijmy same imiona bohaterów (element każdej składowej listy o nazwie 'name')
+map(got_chars, 'name')
+
+# oczywiście możemy także skorzystać z %>%
 got_chars %>%
   map('name')
 
-
-# tak naprawdę, to drugi parametr będący wektorem jest przekształcany na prostą
+# tak naprawdę, to drugi parametr będący tekstem jest przekształcany na prostą
 # funkcję która z każdego elementu listy wyciąga jej element o podanej nazwie
 got_chars %>%
   map(function(x){ x$name }) # funkcja z jednym parametrem
@@ -59,7 +71,7 @@ got_chars %>%
 
 ?'~'
 ?formula # więcej o formułach, an teraz wystarczy wiedzieć, że
-         # formuły służą do przechowywania kodu, który ma być wykonany
+         # formuły pozwalają na przechowywania kodu, który ma być wykonany
 
 
 # wyciągnijmy sobie tylko konkretny podzbiór elementów tych list
@@ -67,14 +79,6 @@ got_chars %>%
   map(~.x[c('name', 'gender')]) %>% # wyciągamy imię i płeć
   View()
 # jak widać wynikowa lista zawiera tylko pola 'name' i 'gender'
-
-
-
-# aaaa, map() można też wykonywać na wektorach
-# np. tutaj tworzymy wektory zawierające kolejne 
-# n pierwszych liter alfabetu
-map(1:10, ~letters[1:.x])
-
 
 
 ###################################################
@@ -114,8 +118,9 @@ got_chars %>%
 
 
 # ... albo skorzystać z map_int(), które zmieni listę
-# automatycznie na wektor integerów. Dodatkowo sprawdzi,
-# czy typ taka konwersja jest możliwa. Jeżeli nie, sypnie błędem
+# integerów automatycznie na wektor integerów. Dodatkowo
+# sprawdzi, czy typ wartości zwracanych to integer,
+# albo typ na integera przekształcalny
 got_chars %>%
   map_int(~length(.x$tvSeries))
 
@@ -143,8 +148,6 @@ got_chars %>%
 # wtedy możemy np. kontynuować przetwarzanie dplyrem
 # np. policzmy w ilu średnio sezonach pojawiają się
 # postać zależnie czy jest mężczyzną czy kobietą
-
-library(dplyr)
 
 got_chars %>%
   map_df(function(x){
@@ -176,6 +179,9 @@ got_chars %>%
 got_chars %>%
   walk(function(x){
     if(x$alive) cat(x$name, 'jeszcze żyje\n')
+  }) %>%
+  walk(function(x){
+    if(!x$alive) cat(x$name, 'jest ofiarą G.R.R. Martina\n')
   })
 
 
@@ -195,7 +201,11 @@ got_chars %>%
 got_luck = as.list(runif(30))
 
 # i teraz wypiszmy kto ma ile szczęscia
-walk2(got_chars, got_luck, ~cat(.x$name, 'ma', paste0(round(100*.y),'%'), 'szczęścia\n'))
+walk2(
+  got_chars,
+  got_luck,
+  ~cat(.x$name, 'ma', paste0(round(100*.y),'%'), 'szczęścia\n')
+)
 
 # rozróżnijmy szczęśliwych i pechowych
 # mężczyzn i kobiety
@@ -228,6 +238,10 @@ map2_dfr(
   )
 )
 
+# oprócz tego mapy funckje służącje do równoległego
+# iterowania po więcej niż dwóch listach
+?pmap
+?pwalk
 
 ###################################################
 ### popatrzmy jeszcze jak korzystając z purrr'a
@@ -249,15 +263,16 @@ library(tidyr)
 # kolumn
 iris %>%
   group_by(Species) %>%
-  nest(species_sample = -Species) # zafnieżdżamy wszyskie kolumny inne
+  nest() # zagnieżdżamy wszyskie kolumny inne
                                   # niż Species
 
 
 # kolumna species_sample zawiera tabele z podzbiorem
 # danych odpowiadających każdemu gatunkowi
 iris %>%
-  nest(species_sample = -Species) %>%
-  pull(species_sample) %>% # wyciąga pojedynczą kolumnę
+  group_by(Species) %>%
+  nest() %>%
+  pull(data) %>% # wyciąga pojedynczą kolumnę
   str() # jak widać ta kolumnę jest listą, której każdy
         # element jest data.framem
 
@@ -265,42 +280,46 @@ iris %>%
 # to teraz zbadajmy zależność między
 # długością a szerokością płatka
 iris %>%
-  nest(species_sample = -Species) %>%
+  group_by(Species) %>%
+  nest() %>%
   mutate(
     model = map(
-      species_sample,                # dla każdego elementu species_sample
-      ~lm(                           # zbudujmy model liniowy
-        Petal.Length ~ Petal.Width,  # zależnośći długości płatka od jego szerokości
-        data = .x)                   # (.x zawiera podtabelę zawierającą dane
-      )                              # dotyczące danego gatunku)
-    ) %>%
+      data,                            # dla każdego elementu species_sample
+      ~lm(                             # zbudujmy model liniowy
+          Petal.Length ~ Petal.Width,  # zależnośći długości płatka od jego szerokości
+          data = .x   # (.x zawiera podtabelę zawierającą dane
+      )               # dotyczące danego gatunku)
+    )
+  ) %>%
   pull(model) # jak widać w kolumnie model są teraz modele liniowe
 
 
-# to teraz jeszcze wyciągnijmy parametry tych modeli
+# to teraz jeszcze wyciągnijmy informacje z tych modeli
 iris %>%
-  nest(species_sample = -Species) %>%
+  group_by(Species) %>%
+  nest() %>%
   mutate(
     model = map(
-      species_sample,
+      data,
       ~lm(
         Petal.Length ~ Petal.Width,
-        data = .x)
+        data = .x
+      )
+    ),
+    r2 = map_dbl(
+      model,
+      ~summary(.x)$r.squared # miara mówiąca jak dobrze model jest dopasowany
+    ),
+    direction = map_dbl(
+      model,
+      ~coef(.x)['Petal.Width'] # o ile przyrasta długość, przy przyroście szerokości o jedną jednostkę
+    ),
+    intercept = map_dbl(
+      model,
+      ~coef(.x)['(Intercept)'] # teoretyczna długości przy szerokości 0
     )
   ) %>%
-  bind_cols(
-    map_dfr(.$model, function(x){ # ta funkcja zostanie wykonana dla każdego modelu 
-      coefs = coef(x)           # wyciągnijmy współczynniki z modelu dla danego gatunku
-      r2 = summary(x)$r.squared # oraz r2, czyli miarę jak dobrze dopasowany jest ten model (liniowy)
-      tibble( # z każdego wywołania funkcji zwracamy tabelkę 
-        r2 = r2,
-        direction = coefs['Petal.Width'],  # o ile przyrasta długość, przy przyroście szerokości o jednostkę
-        intercept = coefs['(Intercept)']   # teoretyczna długości przy szerokości 0
-      )
-    })
-  ) %>% # jako że to jest w bind_cols(), to kolumny z map_dfr() zostaną doklejone do tych, które były wcześniej
-  select(-species_sample, -model) # te dwie kolumny nie są już nam potrzebne
-
+  select(-data, -model) # te dwie kolumny nie są już nam potrzebne
 
 
 
@@ -309,7 +328,12 @@ iris %>%
 ### keep(lista, warunek) - ... pozostawia, usuwając
 ###   resztę, elementy listy, które spełniają podany
 ###   warunek (określony jako funkcja albo formuła)
+### Dokładniej rzecz biorąc te funkcje nie modyfikują
+### oryginalnej listy, a jedynie zwracją nową listę
+### pozbawioną albo ograniczoną do elementów 
+### spełniających określony warunek
 ###################################################
+
 ?keep
 
 # pozostawmy jedynie postacie, które są martwe
@@ -341,30 +365,33 @@ got_chars %>%
 
 # zróbmy sobie funckję która będzie sumować dwie elementy
 suma_dwoch <- function(a,b){
+  cat("a = ",a,"; b = ",b,"\n") # wypiszmy wartości a i b aby widzieć
+                                # ile wynosiły w kolejnych wywołaniach
   a + b
 }
 
 # a teraz z jej pomocą posumujmy liczby od 1 do 5
 1:5 %>%
-  reduce(suma_dwoch)
+  reduce(suma_dwoch) 
 
-# (tak naprawdę, tutaj nie musimy tworzyć własnej
-# bo: sum też zadziała, oraz, sum możemy wywołać
-# bbezpośrednio na wektorze, No ale wiecei, FOR SCIENCE)
+# a teraz z jej pomocą posumujmy liczby od 1 do 5
 1:5 %>%
-  reduce(sum)
+  reduce(suma_dwoch, .init = 0) # przekazujemy wartość pierwszego
+                                # agregatu, więc funkcja reduce()
+                                # nie traktuje w ten sposób 
+                                # pierwszego elementu z listy
 
 
 # no ale może coś ciekawszego z tym...
-# Np. zróbmy wektory z datami i miejscami urodzin
-#   męskich i żeńskich bohaterów Gry o Tron
+# Np. zróbmy wektory z imoionami
+# męskich i żeńskich bohaterów Gry o Tron
 got_chars %>%
   reduce(                         # wywołujemy reduce()
     function(agg, element){       # jako argument podajemy funkcję, która na pierwszy element
                                   #   bierze zagregowane wartości, a na drugi nowy element do dodania
       agg[[element$gender]] = c(  # funkcja, do listy odpowiedniej
         agg[[element$gender]],    # do płci aktualnej postaci,
-        element$born              # dopisuje jej datę i miejsce urodzenia
+        element$name              # dopisuje do odpowiedniego wektora jej imię
       )
       agg                         # a następnie tę listę zwraca
     },
