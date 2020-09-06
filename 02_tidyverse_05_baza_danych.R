@@ -2,43 +2,34 @@
 ### Dodatkowe materiały
 ###################################################
 
-# Postgres: https://code.google.com/archive/p/rpostgresql/
+# DBI: https://db.rstudio.com/dbi/
+
+# Postgres: https://github.com/tomoakin/RPostgreSQL
 #           https://cran.r-project.org/web/packages/RPostgreSQL/RPostgreSQL.pdf
 # MySQL: https://github.com/r-dbi/RMySQL/blob/master/README.md
 #        https://cran.r-project.org/web/packages/RMySQL/RMySQL.pdf
 # Oracle: http://www.oracle.com/technetwork/database/database-technologies/r/roracle/201403-roracle-2167267.pdf
 #         https://cran.r-project.org/web/packages/ROracle/ROracle.pdf
-# MS SQL Server: https://github.com/imanuelcostigan/RSQLServer
-#                https://cran.r-project.org/web/packages/RSQLServer/RSQLServer.pdf
 # SQLite: https://cran.r-project.org/web/packages/RSQLite/RSQLite.pdf
 # ODBC: https://github.com/r-dbi/odbc (obsługuje kilka różnych baz)
 
 # https://dbplyr.tidyverse.org
-# https://dbplyr.tidyverse.org/articles/dbplyr.html
-# https://github.com/tidyverse/dbplyr
 
 ###################################################
-### Np. w przypadku PostgreSQL'a
+### Do czego to się przyda?
 ###################################################
 
-# otwieramy połączenie z bazą danych (oczywiście musimy podać dane bazy do której się łączysz)
-# require("RPostgreSQL")
-# drv <- dbDriver("PostgreSQL")
-# con <- dbConnect(drv, dbname = "nazwa_bazy", host = "adres", port = 5432, user = "nazwa_usera", password = "hasło")
-
-
+# Komunikacja z bazą danych
 
 ###################################################
-### Np. w przypadku SQLite'a
+### Przykład z użyciem SQLite'a
 ###################################################
 
 # Połączmy się z bazą
 # install.packages("RSQLite")
 require(DBI)
 require(RSQLite)
-# te pakiety też, bo się przydadzą
-require(dplyr)
-require(tidyr)
+
 
 # tworzymy sterownik...
 drv <- dbDriver("SQLite")
@@ -108,6 +99,19 @@ dbGetQuery(con, "SELECT * from cars")
 dbDisconnect(con)
 
 
+
+###################################################
+### Podobnie możemy łączyć się z np. PostgreSQL'em
+###################################################
+
+# otwieramy połączenie z bazą danych (oczywiście musimy podać dane bazy do której się łączysz)
+# require("RPostgreSQL")
+# drv <- dbDriver("PostgreSQL")
+# con <- dbConnect(drv, dbname = "nazwa_bazy", host = "adres", port = 5432, user = "nazwa_usera", password = "hasło")
+
+
+
+
 ###################################################
 ### dbplyr - pakiet który pozwala nam pracować
 ###   na tabelach w bazie, za pomocą kodu
@@ -120,14 +124,16 @@ dbDisconnect(con)
 # https://dbplyr.tidyverse.org/articles/dbplyr.html
 # https://github.com/tidyverse/dbplyr
 
+# dużo bardziej szczegółowe info można uzyskać
+# odpalając poniższe polecenia
 vignette('dbplyr')
 vignette('translation-verb')
+
 
 # wczytajmy paliety
 library(DBI)
 library(RSQLite)
-library(dbplyr)
-library(dplyr)
+library(tidyverse)
 
 # tak samo jak wcześniej musimy się połączyć
 # do bazy
@@ -211,18 +217,18 @@ tbl(con, 'cars') %>%
 
 
 # pośrednie kroki przetwarzania można przypisywać do zmiennych
-step1 = tbl(con, 'cars')
+cars_all = tbl(con, 'cars')
 
-step2 = step1 %>%
+cars_gear_4 = cars_all %>%
   filter(gear == 4)
 
-step3 = step2 %>%
+cars_gear_4_grouped = cars_gear_4 %>%
   group_by(am)
 
-step4 = step3 %>%
+cars_gear_4_stats = cars_gear_4_grouped %>%
   summarise(n = n(), mean_mpg = mean(mpg))
 
-step4
+cars_gear_4_stats
 
 
 # na koniec musimy tak samo zamknąć połączenie
@@ -241,7 +247,6 @@ dbDisconnect(con)
 
 library(RMySQL)
 library(tidyverse)
-library(dbplyr)
 
 # tutaj można sprawdzić jakich parametrów połączeniowych 
 # spodziewa się dbConnect w wersji dla MySQL 

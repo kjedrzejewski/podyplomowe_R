@@ -1,4 +1,4 @@
-Materiały na zajęcia z _Programowania w R_ w ramach studiów podyplomowych  [Przetwarzanie danych - Big Data](https://podyplomowe.wmi.amu.edu.pl/kierunki/przetwarzanie-danych-big-data/)
+Materiały na zajęcia z _Programowania w R_ w ramach studiów podyplomowych  [Przetwarzanie danych - Big Data](https://podyplomowe.wmi.amu.edu.pl/kierunki/przetwarzanie-danych-big-data/). Wersja video *wykładów* opartych o zawarte skrypty jest dostępna w serwisie YouTube na [tej playliście](https://www.youtube.com/playlist?list=PLL3-3m0jNaWlA9iLeQlZJQpoXTz3rSTer).
 
 Zajęcia prowadzone przez:
 
