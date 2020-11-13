@@ -4,7 +4,15 @@
 
 # https://plot.ly/r/
 # https://plot.ly/r/reference/
-# http://plotly-book.cpsievert.me/index.html
+# https://plotly-r.com/
+
+###################################################
+### Do czego to się przyda?
+###################################################
+
+# Tworzenie interaktywnych wykresów. Takie które
+# np. można powiększać, albo ukrywać na nich część
+# danych 
 
 ###################################################
 ### Zacznijmy od wykresu punktowego
@@ -12,7 +20,7 @@
 
 # install.packages("plotly")
 
-library(dplyr)
+library(tidyverse)
 library(plotly)
 
 # zacznijmy od scatterplota
@@ -36,6 +44,20 @@ plot_ly(mtcars) %>% # użyj danych z mtcars
   add_trace(x = ~wt, y = ~mpg, type = "scatter", mode = "markers") # add_markers() to tak na prawdę skrót od
                                                                    # add_trace(..., type = "scatter", mode = "markers")
 
+# dane z jakich chcemy skorzystać można także podać bezpośrednio
+# przy dodawaniu serii danych
+plot_ly() %>%                                     # inicjalizując wykres nie musimy wtedy żadnego
+                                                  # podawać datasetu, albo możemy podać inny
+  add_markers(x = ~wt, y = ~mpg, data = mtcars)     # dataset przekazujemy w atrybucie 'data'
+
+# tak samo może to zrobić w przypadku funckji 'add_trace()'
+plot_ly() %>%
+  add_trace(x = ~wt, y = ~mpg, type = "scatter", mode = "markers", data = mtcars)
+
+
+
+
+
 # można także zrobić wykres w 3D
 plot_ly(mtcars) %>%
   add_markers(x = ~wt, y = ~mpg, z = ~qsec)
@@ -51,13 +73,20 @@ plot_ly(mtcars) %>% # użyj danych z mtcars
   add_trace(x = ~wt, y = ~mpg, type = "scatter", mode = "lines+markers")
 
 
-# zróbbmy to trochę porządniej
-m = lm(mpg~wt, data = mtcars) # dopasumy model liniowy, z którego weźmiemy linię trendu
+# aby to trochę lepiej wyglądało, można najpierw posortować dane
+mtcars %>%
+  arrange(wt) %>%                     # posortujmy dane według kolumny, którą dajemy na oś x
+  plot_ly() %>%                       # i wrzućmy je do wykresu
+  add_trace(x = ~wt, y = ~mpg, type = "scatter", mode = "lines+markers", name = 'obserwacje')
+
+
+# zróbmy to trochę porządniej, mianowicie, dodajmy linię trendu
+m = lm(mpg~wt, data = mtcars) # najpierw, dopasujmy model liniowy, z którego weźmiemy jej parametry
 
 mtcars %>%
   mutate(fitted_mpg = fitted(m)) %>%  # dodajmy kolumnę z danymi wynikającymi z modelu liniowego
-  arrange(wt) %>%                     # posortujmy dane według kolumny, którą dajemy na oś x
-  plot_ly() %>%                       # i wrzućmy je do wykresu
+  arrange(wt) %>%
+  plot_ly() %>%
   add_trace(x = ~wt, y = ~mpg, type = "scatter", mode = "lines+markers", name = 'obserwacje') %>%
   add_trace(x = ~wt, y = ~fitted_mpg, type = "scatter", mode = "lines", name = 'trend')
 
@@ -328,7 +357,14 @@ htmlwidgets::saveWidget(p, 'wykres.html') # jako plik html, który po otwarciu w
 
 ?iris
 
+###################################################
+### Zadanie PLOTLY2
+###################################################
 
+# Korzystając z datasetu mtcars, przygotuj wykres
+# kołowy (pie chart) pokazujący liczby samochodów
+# o danej liczbie cylindrów i rodzaju silnika
 
-
+# wynikowy wykres powinien wyglądać tak jak w
+# pliku 03_Wykresy_01z_plotly_zad2.html
 

@@ -47,5 +47,5 @@ datatable(diamonds)
 # Spis treści
 
 Spis treści jest generowany w tym dokumencie automatycznie. Ta funkcje została włączona przez dodanie do YAMLa na początku, przy definicji dla danego typu dokumentu linii `toc: yes`. Z kolei `toc_float: yes` powoduje, że w dokumentach HTML spis treści jest osadzony na stałe po lewej stronie dokumentu, i nie jest przewijany z resztą dokumentu.
-![](08_rmarkdown_2_webowo_toc.png)
+![](04_rmarkdown_02_webowo_toc.png)
 

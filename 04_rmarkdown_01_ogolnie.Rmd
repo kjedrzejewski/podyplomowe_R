@@ -11,7 +11,7 @@ library(ggplot2) # bo w przypadku tego pliku skorzystamy z ggplota
 ```
 
 Ten plik pokazuje jak można tworzyć proste dokumenty w RMarkdown. Możemy z niego wygenerować dokument klikając w mały trójkąt obok przycisku _Knit_, a następnie wybierając typ pliku, który chcemy uzyskać.
-![](08_rmarkdown_1_ogolnie_knit.png)
+![](04_rmarkdown_01_ogolnie_knit.png)
 
 Nowy plik możemy utworzyć wybierając File -> New File -> RMarkdown.
 

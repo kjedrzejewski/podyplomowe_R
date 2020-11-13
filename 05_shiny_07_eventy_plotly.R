@@ -2,7 +2,7 @@
 ### Dodatkowe materiały
 ###################################################
 #
-# https://plot.ly/r/shiny-coupled-events/
+# https://plotly-r.com/linking-views-with-shiny.html
 # 
 # ?event_data
 #
