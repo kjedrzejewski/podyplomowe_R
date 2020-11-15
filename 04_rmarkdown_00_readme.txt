@@ -10,7 +10,7 @@ Do czego to się przyda?
   się zmienią dane, jedynie uruchamiany jego ponowne wygenerowanie (razem
   w wykonaniem wyliczeniem wartości do pokazania)
 
-Należy otworzyć i uruchomić po kolei pliki:
+Przez pliki powinno się przechodzić w następującej kolejności:
 - 08_rmarkdown_1_ogolnie.Rmd
 - 08_rmarkdown_2_webowo.Rmd
 - 08_rmarkdown_3_zadanie.Rmd

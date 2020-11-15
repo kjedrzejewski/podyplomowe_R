@@ -1,9 +1,9 @@
 ---
 title: "Studia podyplomowe Big Data - Język R - RMarkdown"
 output:
-  word_document: default
-  pdf_document: default
   html_document: default
+  pdf_document: default
+  word_document: default
 ---
 
 ```{r echo=FALSE}
@@ -58,7 +58,7 @@ Można także wrzucić tutaj wzory matematyczne z wykorzystaniem MathTeXa, np. $
 
 ***
 
-To jest oczywiście tylko krótki pokaz. Jak ktoś chce korzystać z rmarkdown, to polecam np.
+To jest oczywiście tylko krótki pokaz. Po więcej szczegółów polecam np.
 
 * [Dokumentację](http://rmarkdown.rstudio.com)
 * [Ściągawkę](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
