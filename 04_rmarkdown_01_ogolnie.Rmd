@@ -1,9 +1,9 @@
 ---
 title: "Studia podyplomowe Big Data - Język R - RMarkdown"
 output:
-  html_document: default
   pdf_document: default
   word_document: default
+  html_document: default
 ---
 
 ```{r echo=FALSE}
@@ -38,7 +38,7 @@ Dane obliczane w R może osadzać w tej samej linii, np. pierwiastek z 10 wynosi
 ***
 
 ```{r}
-# przykładowy wykres (jest zrobiony w ggplocie, aby było można wygenerować inne rodzaje dokumentu wynikowego niż HTML)
+# przykładowy wykres (jest zrobiony w ggplocie, aby było można wygenerować inne rodzaje dokumentów wynikowych niż HTML)
 ggplot(iris, mapping = aes(Sepal.Length, Sepal.Width, colour = factor(Species))) +
   geom_point()
 ```
