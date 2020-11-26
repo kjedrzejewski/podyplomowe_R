@@ -3,7 +3,7 @@
 ###################################################
 
 # https://shiny.rstudio.com/articles/reactivity-overview.html
-# plik: 09_shiny_5_reaktywnosc.R
+# plik: 05_shiny_5_reaktywnosc.R
 
 # install.packages('shiny')
 

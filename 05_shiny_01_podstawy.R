@@ -7,6 +7,15 @@
 # http://shiny.rstudio.com/articles/layout-guide.html
 
 ###################################################
+### Do czego to się przyda?
+###################################################
+
+# Tworzenie dashboardów mających elementy
+# sterujące, których działanie można oprogramować
+# w dowolny sposób, oraz łaczyć się na żywo z
+# różnymi źródłami danych
+
+###################################################
 ### Odpalanie:
 ###  aby odpalić kliknij przycisk "Run App" w prawym
 ###  górnym rogu okna edytora kodu źródłowego. Tam
@@ -87,7 +96,7 @@ srv <- function(input, output){
   # 'plot'
   output$plot <- renderPlotly({
     min_x = input$mean - input$sigmas * input$sd
-    max_x = input$mean + input$sigmas *  input$sd
+    max_x = input$mean + input$sigmas * input$sd
     x = seq(min_x, max_x, length.out = 1000)
     y = dnorm(x, input$mean, input$sd)
     

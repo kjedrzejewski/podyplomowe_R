@@ -1,6 +1,6 @@
 # Wykorzystując bazę SQLite zawartą pliku 'homework.db' oblicz MEDIANĘ liczby przylotów
 # i odlotów na lotnisku w Los Angeles w każdym z 12 miesięcy w roku.
-# Następnie zapisz wynik do pliku CSV. (oczekiwany wynik masz w pliku 06_Praca_domowa_2_wynik.csv)
+# Następnie zapisz wynik do pliku CSV. (oczekiwany wynik masz w pliku Zadanie_domowe_02_wynik.csv)
 #
 # Zwróc uwagę, że dla każdego miesiąca masz podane informacje o kilku rodzajów lotów. Należy
 # więc je wstępnie zsumować.
