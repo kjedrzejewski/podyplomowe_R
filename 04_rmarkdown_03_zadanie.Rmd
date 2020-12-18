@@ -10,5 +10,5 @@ output: html_document
 
 # Zadanie
 
-Korzystając ze zbioru __mtcars__, przygotuj dokument podobny do tego w 08_rmarkdown_3_zadanie_Wzor.html.
+Korzystając ze zbioru __mtcars__, przygotuj dokument podobny do tego w 04_rmarkdown_03_zadanie_Wzor.html.
 
