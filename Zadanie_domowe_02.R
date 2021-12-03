@@ -7,11 +7,15 @@
 
 library(DBI)
 library(RSQLite)
+library(dbplyr)
 
 drv <- dbDriver("SQLite")
 
 con <- dbConnect(drv, "Zadanie_domowe_02_homework.db", flags = SQLITE_RO) # połączenie w trybie tylko do odczytu, aby przypadkiem nie zmodyfikować zawartości bazy
 
+#dbplyr
+tbl(con, 'flights')
+#DBI
 dbGetQuery(con, 'SELECT * FROM flights')
 
 
