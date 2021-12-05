@@ -46,9 +46,8 @@ plot_ly(mtcars) %>% # użyj danych z mtcars
 
 # dane z jakich chcemy skorzystać można także podać bezpośrednio
 # przy dodawaniu serii danych
-plot_ly() %>%                                     # inicjalizując wykres nie musimy wtedy żadnego
-                                                  # podawać datasetu, albo możemy podać inny
-  add_markers(x = ~wt, y = ~mpg, data = mtcars)     # dataset przekazujemy w atrybucie 'data'
+plot_ly() %>% # wtedy inicjalizując wykres nie musimy podawać datasetu
+  add_markers(x = ~wt, y = ~mpg, data = mtcars)
 
 # tak samo może to zrobić w przypadku funckji 'add_trace()'
 plot_ly() %>%
@@ -117,7 +116,7 @@ plot_ly(mtcars) %>%
     x = ~wt, y = ~mpg,
     type = "scatter", mode = "markers",
     color = ~cyl # tym razem podajemy nie konkretny kolor, a to że ma zależeć od wartości zmiennej
-                 # cyl jest liczbą, więc plotly traktuje to jako zmienną ciągłą
+    # cyl jest liczbą, więc plotly traktuje to jako zmienną ciągłą
   ) %>%
   layout(
     xaxis = list(title = 'Waga [1000 lbs]', rangemode = "tozero"), 
@@ -313,7 +312,8 @@ plot_geo(quakes) %>% # zaczynamy wykresy "mapowy"
 ###################################################
 ### Zapisywanie do pliku:
 ### - jako plik statyczny:
-###   plotly::orca(...)
+###   plotly::save_image(...) # obecnie zalecane
+###   plotly::orca(...)       # przestarzałe
 ### - jako obiekt interaktywny
 ###   htmlwidgets::saveWidget()
 ###################################################
@@ -332,13 +332,32 @@ p = plot_ly(mtcars) %>%
     yaxis = list(title = 'Mile / galon', rangemode = "tozero")
   )
 
+# jako plik html, który po otwarciu w przeglądarce zawiera interkatywną stronę
+htmlwidgets::saveWidget(p, 'wykres.html')
+
+# jako statyczny plik korzystając z aplikcji orca
+# jest to obecnie funkcjonalność przestarzała
+# do działania wymaga zainstalowanej aplikacji orca: https://github.com/plotly/orca#installation
 orca(p = p, file = 'wykres.png') # zapis do pliku
 orca(p = p, file = 'wykres.png', width = 800, height = 600) # oczekiwany rozmiar obrazu można określić
 orca(p = p, file = 'wykres2.png', width = 1600, height = 1200) # jak zmieniamy rozmiar, poszczególne elementy wykresu zmieniają swój względny rozmiar
 orca(p = p, file = 'wykres3.png', width = 800, height = 600, scale = 2) # jak chcemy jedynie podnieść szczegółowość obrazu, można użyć scale
 orca(p = p, file = 'wykres3.pdf', width = 800, height = 600) # można też zapisać do pdf
 orca(p = p, file = 'wykres3.jpeg', width = 800, height = 600, scale = 2) # i jpeg
-htmlwidgets::saveWidget(p, 'wykres.html') # jako plik html, który po otwarciu w przeglądarce zawiera interkatywną stronę
+
+
+# jako statyczny plik korzystając z biblioteki kaleido
+# jest to obecnie funkcjonalność przestarzała
+# do działania wymaga:
+# - zainstalowanego pakietu reticulate: install.packages('reticulate')
+# - zaintalowanej biblioteki kaleido w pythonie: https://github.com/plotly/Kaleido
+# - oraz podobnie zainstalowanego plotly'ego w pythonie
+save_image(p = p, file = 'wykres.png') # zapis do pliku
+save_image(p = p, file = 'wykres.png', width = 800, height = 600) # oczekiwany rozmiar obrazu można określić
+save_image(p = p, file = 'wykres2.png', width = 1600, height = 1200) # jak zmieniamy rozmiar, poszczególne elementy wykresu zmieniają swój względny rozmiar
+save_image(p = p, file = 'wykres3.png', width = 800, height = 600, scale = 2) # jak chcemy jedynie podnieść szczegółowość obrazu, można użyć scale
+save_image(p = p, file = 'wykres3.pdf', width = 800, height = 600) # można też zapisać do pdf
+save_image(p = p, file = 'wykres3.jpeg', width = 800, height = 600, scale = 2) # i jpeg
 
 ###################################################
 ### Zadanie PLOTLY1
